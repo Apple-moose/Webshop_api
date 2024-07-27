@@ -1,0 +1,62 @@
+SQL insert one row query:
+
+insert into categories (id, name, "createdAt", "updatedAt")
+values (7, 'Games', NOW(), NOW()) 
+
+SQL insert all categories.data query
+
+insert into categories (id, name, "createdAt", "updatedAt")
+values (1, 'Electronics', NOW(), NOW()),
+(2, 'Clothing', NOW(), NOW()),
+(3, 'Plants', NOW(), NOW()),
+(4, 'Books', NOW(), NOW()),
+(5, 'Music', NOW(), NOW()),
+(6, 'Furniture', NOW(), NOW()),
+(7, 'Games', NOW(), NOW()),
+(8, 'Sport', NOW(), NOW())
+
+
+      "categories",
+      [
+        {
+          name: "Electronics",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          name: "Clothing",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          name: "Plants",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          name: "Books",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          name: "Music",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          name: "Furniture",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          name: "Games",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          name: "Sport",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ],
+
