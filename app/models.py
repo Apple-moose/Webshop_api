@@ -54,6 +54,7 @@ class User(Base):
     password = Column(String, nullable=False)
     imageUrl = Column(String, nullable=True)
     disabled = Column(Boolean, default=False)
+    is_Admin = Column(Boolean, default=False)
     createdAt = Column(DateTime(timezone=True), default=func.now(), nullable=False)
     updatedAt = Column(DateTime(timezone=True), default=func.now(), onupdate=func.now(), nullable=False)
 
@@ -61,12 +62,12 @@ class User(Base):
     reviews = relationship("Review", back_populates="user") 
 
 
-class Admin(Base):
-    __tablename__ = "administrators"
+# class Admin(Base):
+#     __tablename__ = "administrators"
 
-    id = Column(Integer, primary_key=True, autoincrement=True, index=True)
-    admin_name = Column(String, nullable=False)
-    password = Column(String, nullable=False)
-    disabled = Column(Boolean, default=False)
-    createdAt = Column(DateTime(timezone=True), default=func.now(), nullable=False)
-    updatedAt = Column(DateTime(timezone=True), default=func.now(), onupdate=func.now(), nullable=False)
+#     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
+#     admin_name = Column(String, nullable=False)
+#     password = Column(String, nullable=False)
+#     disabled = Column(Boolean, default=False)
+#     createdAt = Column(DateTime(timezone=True), default=func.now(), nullable=False)
+#     updatedAt = Column(DateTime(timezone=True), default=func.now(), onupdate=func.now(), nullable=False)

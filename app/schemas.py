@@ -12,10 +12,10 @@ class CategoryBase(BaseModel):
 
 class CategoryCreate(CategoryBase):
     pass
-    # id: int
-    # name: str
-    # createdAt: datetime
-    # updatedAt: datetime
+
+class CategoryUpdate(BaseModel):
+    name: str
+    updatedAt: datetime
 
 class Category(CategoryBase):
     id: int
@@ -78,6 +78,12 @@ class Review(ReviewBase):
     class Config:
         from_attributes = True
 
+class ReviewUpdate(BaseModel):
+    content: Union[str, None] = None
+    stars: int = Field(..., ge=1, le=5, description="The quantity must be between 1 and 5")
+    updatedAt: datetime
+
+
 
 # User Stuff
 
@@ -102,6 +108,9 @@ class User(UserBase):
 
     class Config:
         from_attributes = True
+
+# class Admin(UserBase):
+#     is_Admin: Boolean
 
 
 # Login stuff

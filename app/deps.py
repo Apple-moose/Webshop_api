@@ -6,6 +6,7 @@ from pydantic import ValidationError
 from app import database, models
 from app.schemas import TokenPayload, Token, UserBase
 from app.auth import ALGORITHM, JWT_SECRET_KEY
+from sqlalchemy.orm import Session
 
 # This dependency will make sure get_current_user below will
 # always receive the `token` as a string.
@@ -41,7 +42,7 @@ async def get_current_user(token: str = Depends(reuseable_oauth)) -> UserBase:
      # Extracting a specific value from the payload
     # user_id: str = payload.get("sub")
 
-    [user_id, username] = token_data.sub.split(":")
+    [user_id, email] = token_data.sub.split(":")
     user = db.query(models.User).filter(models.User.id == user_id).first()
     if user is None:
         raise HTTPException(
@@ -50,3 +51,11 @@ async def get_current_user(token: str = Depends(reuseable_oauth)) -> UserBase:
         )
 
     return user
+
+
+def is_user_admin(db: Session, user_id: int ):
+    admin = db.query(models.User).filter(
+        models.User.id == user_id).filter(
+        models.User.is_Admin == True
+        ).first()
+    return admin
