@@ -1,12 +1,12 @@
 
 from typing import List
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Form
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from dotenv import load_dotenv
 from app import categories, reviews, users, database, schemas, products, auth
-# from app.deps import get_current_user
+from app.deps import get_current_user
 
 
 load_dotenv()
@@ -22,6 +22,24 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
+# new OAuth2PasswordRequestForm
+# class OAuth2EmailPasswordRequestForm:
+#     def __init__(
+#         self,
+#         email: str = Form(...),
+#         password: str = Form(...),
+#         scope: str = Form(""),
+#         grant_type: str = Form(None, regex="password"),
+#         client_id: str = Form(None),
+#         client_secret: str = Form(None)
+#     ):
+#         self.email = email
+#         self.password = password
+#         self.scope = scope
+#         self.grant_type = grant_type
+#         self.client_id = client_id
+#         self.client_secret = client_secret
+
 # Dependency
 def get_db():
     db = database.SessionLocal()
@@ -40,9 +58,12 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 # Login
 
-# @app.post("/auth/login", response_model=schemas.Token)
-# def login_user(user: schemas.UserCredentials, db: Session = Depends(get_db)):
-#     return users.login_user(db, user=user)
+@app.post("/auth/login", response_model=schemas.Token)
+def login_user(
+    user: schemas.UserCredentials,
+    db: Session = Depends(get_db)
+):
+    return users.login_user(db, user=user)
 
 
 # This dependency will make sure get_current_user below will
@@ -52,12 +73,12 @@ reuseable_oauth = OAuth2PasswordBearer(
     scheme_name="JWT"
 )
 
-# @app.post("/docslogin", response_model=schemas.Token)
-# def login_with_form_data(
-#     user: OAuth2PasswordRequestForm = Depends(),
-#     db: Session = Depends(get_db)
-# ):
-#     return users.login_user(db, user=user)
+@app.post("/docslogin", response_model=schemas.Token)
+def login_with_form_data(
+    user: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db)
+):
+    return users.login_user(db, user=user)
 
 
 # get user's profile
@@ -68,6 +89,7 @@ reuseable_oauth = OAuth2PasswordBearer(
 @app.get("/auth/{id}", response_model=schemas.User)
 def user_by_id(
     id: int,
+    token: str = Depends(reuseable_oauth),
     db: Session = Depends(get_db)):
     results = users.get_user_by_id(db, user_id=id)
     if results is None:
@@ -80,9 +102,7 @@ def user_by_id(
 @app.get("/products", response_model=List[schemas.Product])
 def read_products(
     skip: int = 0, limit: int = 20,
-    # user: schemas.UserBase = Depends(get_current_user),
     db: Session = Depends(get_db)):
-    # results = lists.get_lists(db, user_id=user.id, skip=skip, limit=limit)
     results = products.get_products(db, skip=skip, limit=limit)
     if results is None:
         raise HTTPException(status_code=404, detail="No lists found")
@@ -132,9 +152,7 @@ def products_list_by_categoryId(
 @app.get("/categories", response_model=List[schemas.Category])
 def read_categories(
     skip: int = 0, limit: int = 20,
-    # user: schemas.UserBase = Depends(get_current_user),
     db: Session = Depends(get_db)):
-    # results = lists.get_lists(db, user_id=user.id, skip=skip, limit=limit)
     results = categories.get_categories(db, skip=skip, limit=limit)
     if results is None:
         raise HTTPException(status_code=404, detail="No lists found")
@@ -146,11 +164,10 @@ def read_categories(
 @app.post("/categories", response_model=schemas.Category)
 def create_category(
     category: schemas.CategoryCreate, 
-    # user: schemas.UserBase = Depends(get_current_user),
+    user: schemas.UserBase = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    # return categories.create_category(db, user_id=user.id, list=list)
-    return categories.create_category(db, cat=category)
+    return categories.create_category(db, user_id=user.id, cat=category)
 
 
 # Get reviews by productId
@@ -333,8 +350,8 @@ def get_reviews_by_product_id(
 #         updated_data=updated_data)
 
 
-# @app.get("/healthz", response_model=schemas.Healthz)
-# def healthz():
-#     return {"status": "ok"}
+@app.get("/healthz", response_model=schemas.Healthz)
+def healthz():
+    return {"status": "ok"}
 
 

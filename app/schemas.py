@@ -84,13 +84,13 @@ class Review(ReviewBase):
 class UserBase(BaseModel):
     id: int
     firstname: str
-    lastname: str
+    lastname: Union[str, None] = None
     email: str
     imageUrl: Union[str, None] = None
 
 class UserCreate(BaseModel):
     firstname: str
-    lastname: str
+    lastname: Union[str, None] = None
     email: str
     password: str
     imageUrl: Union[str, None] = None

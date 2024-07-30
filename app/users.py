@@ -30,17 +30,17 @@ def get_user_by_id(db: Session, user_id: int):
     print(user)
     return user
 
-# def login_user(db: Session, user: schemas.UserCredentials):
-#     db_user = db.query(models.User).filter(
-#         models.User.email == user.email).first()
+def login_user(db: Session, user: schemas.UserCredentials):
+    db_user = db.query(models.User).filter(
+        models.User.email == user.username).first()
 
-#     user_password_error = "Incorrect username or password"
+    user_password_error = "Incorrect username or password"
 
-#     if db_user is None:
-#         raise HTTPException(status_code=404, detail=user_password_error)
-#     if not verify_password(user.password, db_user.password):
-#         raise HTTPException(status_code=401, detail=user_password_error)
-#     return {
-#         "access_token": auth.create_access_token(f"{db_user.id}:{db_user.username}"),
-#         "token_type": "bearer"}
+    if db_user is None:
+        raise HTTPException(status_code=404, detail=user_password_error)
+    if not verify_password(user.password, db_user.password):
+        raise HTTPException(status_code=401, detail=user_password_error)
+    return {
+        "access_token": auth.create_access_token(f"{db_user.id}:{db_user.email}"),
+        "token_type": "bearer"}
 

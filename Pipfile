@@ -12,6 +12,7 @@ psycopg2-binary = "*"
 alembic = "*"
 python-jose = {extras = ["cryptography"], version = "*"}
 passlib = {extras = ["bcrypt"], version = "*"}
+python-dotenv = "*"
 
 [dev-packages]
 

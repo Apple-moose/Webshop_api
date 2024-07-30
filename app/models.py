@@ -65,7 +65,7 @@ class Admin(Base):
     __tablename__ = "administrators"
 
     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
-    adminname = Column(String, nullable=False)
+    admin_name = Column(String, nullable=False)
     password = Column(String, nullable=False)
     disabled = Column(Boolean, default=False)
     createdAt = Column(DateTime(timezone=True), default=func.now(), nullable=False)
