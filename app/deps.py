@@ -8,12 +8,11 @@ from app.schemas import TokenPayload, Token, UserBase
 from app.auth import ALGORITHM, JWT_SECRET_KEY
 from sqlalchemy.orm import Session
 
-# This dependency will make sure get_current_user below will
-# always receive the `token` as a string.
 reuseable_oauth = OAuth2PasswordBearer(
-    tokenUrl="/docslogin",  # only for usage in the docs!
+    tokenUrl="/docslogin",  
     scheme_name="JWT"
 )
+
 async def get_current_user(token: str = Depends(reuseable_oauth)) -> UserBase:
     
     try:
@@ -39,7 +38,7 @@ async def get_current_user(token: str = Depends(reuseable_oauth)) -> UserBase:
             detail="Could not validate credentials",
             headers={"WWW-Authenticate": "Bearer"},
         )
-     # Extracting a specific value from the payload
+    # Extracting a specific value from the payload
     # user_id: str = payload.get("sub")
 
     [user_id, email] = token_data.sub.split(":")

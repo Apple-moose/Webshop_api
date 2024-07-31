@@ -41,7 +41,6 @@ class ProductCreate(ProductBase):
 
 class Product(ProductBase):
     id: int
-    # category: list[Category] = []
     createdAt: datetime
     updatedAt: datetime
 
@@ -54,6 +53,8 @@ class ProductUpdate(BaseModel):
     description: str
     imageUrl: Union[str, None] = None
     categoryId: int
+    updatedAt: datetime
+
 
 
 # Review stuff
@@ -61,16 +62,18 @@ class ProductUpdate(BaseModel):
 class ReviewBase(BaseModel):
     id: int
     author: str
-    content: Union[str, None] = None
+    content: Union[str, None] = Field(None, max_length=200, description="max 200 characters!")
     stars: int = Field(..., ge=1, le=5, description="The quantity must be between 1 and 5")
     productId: int
 
-class ReviewCreate(ReviewBase):
-    pass
+class ReviewCreate(BaseModel):
+    author: str
+    content: Union[str, None] = Field(None, max_length=200, description="max 200 characters!")
+    stars: int = Field(..., ge=1, le=5, description="The quantity must be between 1 and 5")
 
 class Review(ReviewBase):
     id: int
-    userId: int #user-owner number
+    userId: int
     createdAt: datetime
     updatedAt: datetime
 
@@ -79,7 +82,7 @@ class Review(ReviewBase):
         from_attributes = True
 
 class ReviewUpdate(BaseModel):
-    content: Union[str, None] = None
+    content: Union[str, None] = Field(None, max_length=200, description="max 200 characters!")
     stars: int = Field(..., ge=1, le=5, description="The quantity must be between 1 and 5")
     updatedAt: datetime
 
@@ -108,9 +111,6 @@ class User(UserBase):
 
     class Config:
         from_attributes = True
-
-# class Admin(UserBase):
-#     is_Admin: Boolean
 
 
 # Login stuff

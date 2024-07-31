@@ -32,9 +32,13 @@ def get_db():
         db.close()
 
 reuseable_oauth = OAuth2PasswordBearer(
-    tokenUrl="/docslogin",  # only for usage in the docs!
+    tokenUrl="/docslogin", 
     scheme_name="JWT"
 )
+
+
+#-o-o-o-o-o-o-o-o-o-o-o-o- USER'S -o-o-o-o-o-o-o-o-o-o-o-o-o--oo-o-o-o-o-o-o-o-o-o-
+
 
 # sign up users
 @app.post("/auth/signup", response_model=schemas.UserBase)
@@ -87,6 +91,9 @@ def get_user_by_id(
     return results
 
 
+#-o-o-o-o-o-o-o-o-o-o-o-o- PRODUCTS -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
+
+
 # get products list
 @app.get("/products", response_model=List[schemas.Product])
 def read_products(
@@ -131,6 +138,56 @@ def products_list_by_categoryId(
         raise HTTPException(status_code=404, detail="No lists found")
     return results
 
+
+# create a new Product profile
+@app.post("/product", response_model=schemas.Product)
+def write_a_new_product(
+    product: schemas.ProductCreate, 
+    user: schemas.UserBase = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    admin = is_user_admin(db, user_id=user.id)
+    if admin is None:
+        raise HTTPException(status_code=404, detail="You are not an Administratore!!!")
+    return products.create_product(db, product=product)
+
+
+# Update a product by id
+@app.post("/product/{id}", response_model=schemas.Product)
+async def update_product(
+    id: int,
+    product: schemas.ProductUpdate, 
+    user: schemas.UserBase = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    check_product = products.get_product_by_id(db, prod_id=id)
+    admin = is_user_admin(db, user_id=user.id)
+
+    if check_product is None:
+        raise HTTPException(status_code=404, detail="Product not found")
+    if admin is None:
+        raise HTTPException(status_code=404, detail="You are not an Administratore!!!")
+    else:
+        return products.update_product(
+            db, 
+            pro_id=id, 
+            product=product)
+
+# Remove product by id
+@app.delete("/product/{id}", response_model=schemas.Product)
+def remove_product(
+    id: int,
+    user: schemas.UserBase = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    admin = is_user_admin(db, user_id=user.id)
+    if admin is None:
+        raise HTTPException(status_code=404, detail="You are not an Administratore!!!")
+
+    return products.delete_product(db, pro_id=id)
+
+
+#-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o CATEGORY  -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
 
 
 # Get Categories list
@@ -179,6 +236,8 @@ async def update_category(
             category=category)
 
 
+#-o-o-o-o-o-o-o-o-o-o-o-o-o-op-  REVIEWS  -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
+
 
 # Get reviews by productId
 @app.get("/reviews/productId:{prod_id}", response_model=List[schemas.Review])
@@ -210,6 +269,7 @@ def get_my_reviews(
         raise HTTPException(status_code=404, detail="No reviews found")
     return results
 
+
 # update review by id
 @app.post("/review/update:{id}", response_model=schemas.Review)
 async def update_my_review(
@@ -229,161 +289,28 @@ async def update_my_review(
             review=updated_review)
 
 
+# Create a Review as user
+@app.post("/review/{prodId}", response_model=schemas.ReviewCreate)
+def write_my_review(
+    rev: schemas.ReviewCreate, 
+    prodId: int,
+    user: schemas.UserBase = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    return reviews.create_review(db, user_id=user.id, prod_id=prodId, rev=rev)
 
-
-
-
-
-# Get List per id
-
-
-# @app.get("/lists/{list_id}", response_model=schemas.List)
-# def read_list(
-#     list_id: int,
-#     user: schemas.UserBase = Depends(get_current_user),
-#     db: Session = Depends(get_db)):
-#     results = lists.get_list(db, list_id=list_id, user_id=user.id)
-#     if results is None:
-#         raise HTTPException(status_code=404, detail="No lists found")
-#     return results
-
-# create list
-
-
-# @app.post("/lists", response_model=schemas.List)
-# def create_list(
-#     list: schemas.ListCreate, 
-#     user: schemas.UserBase = Depends(get_current_user),
-#     db: Session = Depends(get_db)
-# ):
-#     return lists.create_list(db, user_id=user.id, list=list)
-
-# delete list
-
-
-# @app.delete("/lists/{list_id}", response_model=schemas.List)
-# def delete_lists(
-#     list_id: int, 
-#     user: schemas.UserBase = Depends(get_current_user),
-#     db: Session = Depends(get_db)):
-#     return lists.delete_list(db, user_id=user.id, list_id=list_id)
-
-#GET Task with lists id and auth
-
-# @app.get("/lists/{list_id}/tasks", response_model=List[schemas.Task])
-# def read_tasks(
-#     list_id: int,
-#     user: schemas.UserBase = Depends(get_current_user),
-#     skip: int = 0, 
-#     limit: int = 20, 
-#     db: Session = Depends(get_db)):
-#     results = tasks.get_tasks(db, list_id=list_id, user_id=user.id, skip=skip, limit=limit)
-#     if results is None:
-#         raise HTTPException(status_code=404, detail="No lists found")
-#     return results
-
-
-
-# get task with its items
-
-
-# @app.get("/tasks", response_model=List[schemas.Task])
-# def read_tasks(
-#     skip: int = 0, 
-#     limit: int = 20, db: Session = Depends(get_db)):
-#     results = tasks.get_tasks(db, skip=skip, limit=limit)
-#     if results is None:
-#         raise HTTPException(status_code=404, detail="No lists found")
-#     return results
-
-
-#GET Task with lists id and auth
-
-# @app.get("/lists/{list_id}/tasks/{id}", response_model=schemas.Task)
-# def read_tasks(
-#     list_id: int,
-#     id: int,
-#     user: schemas.UserBase = Depends(get_current_user),
-#     db: Session = Depends(get_db)):
-#     results = tasks.get_task_by_list_id(db, list_id=list_id, user_id=user.id, task_id=id)
-#     if results is None:
-#         raise HTTPException(status_code=404, detail="No lists found")
-#     return results
-
-
-# create task
-
-
-# @app.post("/tasks", response_model=schemas.Task)
-# def create_task(list: schemas.Task, db: Session = Depends(get_db)):
-#     return tasks.create_task(db, list=list)
-
-
-# create task with list_id and auth
-
-
-# @app.post("/lists/{list_id}/tasks", response_model=schemas.Task)
-# def create_list_task(
-#     list_id: int,
-#     task: schemas.TaskCreate,
-#     user: schemas.UserBase = Depends(get_current_user),
-#     db: Session = Depends(get_db)
-# ):
-#   	# FIRST, try to fetch the list for this user
-#     list = lists.get_list(db, user_id=user.id, list_id=list_id)
-
-#     # 404 if the list isn't accessible / not found
-#     if list is None:
-#         raise HTTPException(status_code=404, detail="List not found")
-#     else:
-#       	# SECOND, proceed with creation of the task, only if the list is accessible for this user.
-#         return tasks.create_task_id(db, list_id=list_id, task=task)
     
+# Remove review by id
+@app.delete("/review/{id}", response_model=schemas.Review)
+def remove_my_review(
+    id: int,
+    user: schemas.UserBase = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    return reviews.delete_review(db, rev_id=id, user_id=user.id)
 
 
-# delete task
 
-
-# @app.delete("/tasks", response_model=schemas.Task)
-# def delete_tasks(list_id: int, db: Session = Depends(get_db)):
-#     return tasks.delete_task(db, list_id=list_id)
-
-
-# DELETE specific tasks with list_id (auth)
-
-# @app.delete("/lists/{list_id}/tasks/{id}", response_model=schemas.Task)
-# def delete_tasks_by_id(
-#     list_id: int,
-#     id: int,
-#     user: schemas.UserBase = Depends(get_current_user),
-#     db: Session = Depends(get_db)):
-#     return tasks.delete_task_by_id(
-#         db,
-#         list_id=list_id,
-#         task_id=id,
-#         user_id=user.id,
-#     )
-
-#UPDATE a specific Task with auth
-
-# @app.put("/lists/{list_id}/tasks/{id}", response_model=schemas.TaskUpdate)
-# async def update_task(
-#     list_id: int,
-#     id: int,
-#     updated_data: schemas.TaskUpdate, 
-#     user: schemas.UserBase = Depends(get_current_user), 
-#     db: Session = Depends(get_db)):
-
-#     check_list = lists.get_list(db, list_id=list_id, user_id=user.id)
-
-#     if check_list is None:
-#         raise HTTPException(status_code=404, detail="List not found")
-#     else:
-#         return tasks.update_task_by_id(
-#         db, 
-#         list_id=list_id,
-#         task_id=id, 
-#         updated_data=updated_data)
 
 
 @app.get("/healthz", response_model=schemas.Healthz)

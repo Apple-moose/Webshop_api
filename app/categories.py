@@ -1,20 +1,22 @@
 from sqlalchemy.orm import Session
 from . import models, schemas
 
-# get categories
 
+# get categories list
 def get_categories(db: Session, skip: int = 0, limit: int = 20):
     categories = db.query(models.Category).offset(skip).limit(limit).all()
     print(categories)
     return categories
 
+
+#Get one category by id
 def get_category(db: Session, cat_id: int):
     category = db.query(models.Category).filter(
     models.Category.id == cat_id).first()
     return category
 
-# Create Category
 
+# Create Category
 def create_category(db: Session, cat: schemas.CategoryCreate):
     db_cat = models.Category(**cat.dict())
     db.add(db_cat)
@@ -23,6 +25,7 @@ def create_category(db: Session, cat: schemas.CategoryCreate):
     return db_cat
 
 
+#Update category
 def update_category(
         db: Session, 
         category: schemas.CategoryUpdate, 

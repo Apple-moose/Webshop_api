@@ -26,6 +26,7 @@ def get_users_reviews(
     models.Review.userId == user_id).offset(skip).limit(limit).all()
     return reviews
 
+
 #Update y review by reviewId
 def update_review(
         db: Session, 
@@ -39,3 +40,25 @@ def update_review(
     db.commit()
     db.refresh(db_rev)
     return db_rev
+
+
+# Write a Review as user (by productId)
+def create_review(db: Session, 
+    rev: schemas.ReviewCreate,
+    user_id: int, prod_id: int):
+    db_rev = models.Review(**rev.dict(), userId=user_id, productId=prod_id)
+    db.add(db_rev)
+    db.commit()
+    db.refresh(db_rev)
+    return db_rev
+
+
+# Erase my review (by review Id)
+def delete_review(db: Session, user_id: int, rev_id: int):
+    rev_db = db.query(models.Review).filter(
+    models.Review.id == rev_id).filter(
+    models.Review.userId == user_id
+    ).first()
+    db.delete(rev_db)
+    db.commit()
+    return rev_db
