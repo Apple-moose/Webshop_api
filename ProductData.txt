@@ -21,7 +21,7 @@ values (1, 'Catan', 30, 'Catan, previously known as The Settlers of Catan or sim
  'https://www.nochederock.com/wp-content/uploads/2019/01/ubongo-portada_1-768x774.jpg',
   7, NOW(), NOW()),
 (4, 'Gloomhaven', 150, 'Gloomhaven is a game of Euro-inspired tactical combat in a persistent world of shifting motives. Players will take on the role of a wandering adventurer with their own special set of skills and their own reasons for traveling to this dark corner of the world. Players must work together out of necessity to clear out menacing dungeons and forgotten ruins.',
- 'https://www.mightycollectibles.com.au/wp-content/uploads/2021/02/Gloomhaven-Mighty-Set.png',
+ 'https://d3fa68hw0m2vcc.cloudfront.net/142/226883682.jpeg',
   7, NOW(), NOW()),
 (5, 'Ticket to Ride', 60, 'Ticket to Ride is a board game where players strategically collect train cards and claim railway routes across a map to complete destination tickets and build the longest continuous rail network.',
  'https://th.bing.com/th/id/R.8003dc98af08f5284cb186adf3fbc3e3?rik=jN2XrgiD%2fKM6bg&pid=ImgRaw&r=0',

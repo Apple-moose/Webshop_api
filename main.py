@@ -32,7 +32,7 @@ def get_db():
         db.close()
 
 reuseable_oauth = OAuth2PasswordBearer(
-    tokenUrl="/docslogin", 
+    tokenUrl="/auth/login", 
     scheme_name="JWT"
 )
 
@@ -42,7 +42,10 @@ reuseable_oauth = OAuth2PasswordBearer(
 
 # sign up users
 @app.post("/auth/signup", response_model=schemas.UserBase)
-def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+def create_user(
+    user: schemas.UserCreate, 
+    db: Session = Depends(get_db)
+):
     return users.create_user(db, user=user)
 
 

@@ -9,7 +9,8 @@ from app.auth import ALGORITHM, JWT_SECRET_KEY
 from sqlalchemy.orm import Session
 
 reuseable_oauth = OAuth2PasswordBearer(
-    tokenUrl="/docslogin",  
+    # tokenUrl="/docslogin",  
+    tokenUrl="/auth/login",
     scheme_name="JWT"
 )
 
