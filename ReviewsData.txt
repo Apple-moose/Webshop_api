@@ -63,7 +63,7 @@ values
 ('Patrice', $$Shitty racquets. Don't buy$$, 1, 8, 1, now(), now()),
 ('Jim', $$Super nice, had a lot of fun playing with my friends!$$, 5, 1, 2, now(), now()),
 ('Nat', $$Very good product, but quite expensive, it should be somewhat cheaper$$, 4, 2, 3, now(), now()),
-('Soleil', $$Nice cactus, the problem was the delivery, the box was quite demaged and it damaged the plant as well$$, 3, 3, 4, now(), now()),
+('Soleil', $$Nice cactus, the problem was the delivery, the box was quite damaged and it damaged the plant as well$$, 3, 7, 4, now(), now()),
 ('Soleil', $$nice racks!!!$$, 5, 8, 4, now(), now()),
-('Patrice', $$The dress is way too expensive for the quality. Fabric is thin and cheap. I don't recommend!$$, 1, 5, 1, now(), now())
+('Patrice', $$The dress is way too expensive for the quality. Fabric is thin and cheap. I don't recommend!$$, 1, 9, 1, now(), now())
 
