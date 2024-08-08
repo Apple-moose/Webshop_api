@@ -8,6 +8,7 @@
           userId: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
+          userImgUrl: "https://bluemooseburgersandwings.com/wp-content/uploads/Blue-Moose-Muscle-web-min.png",
         }
         {
           author: "Jim",
@@ -35,6 +36,7 @@
           userId: 4,
           createdAt: new Date(),
           updatedAt: new Date(),
+          userImgUrl: "https://pngimg.com/uploads/sun/sun_PNG13410.png",
         },
         {
           author: "Soleil",
@@ -44,6 +46,8 @@
           userId: 4,
           createdAt: new Date(),
           updatedAt: new Date(),
+          userImgUrl: "https://pngimg.com/uploads/sun/sun_PNG13410.png",
+
         },
         {
           author: "Patrice",
@@ -53,17 +57,19 @@
           userId: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
+          userImgUrl: "https://bluemooseburgersandwings.com/wp-content/uploads/Blue-Moose-Muscle-web-min.png",
+
         },
       ],
 
 SQL Query for all reviews:
 
-insert into reviews (author, content, stars, "productId", "userId", "createdAt", "updatedAt")
+insert into reviews (author, content, stars, "productId", "userId", "createdAt", "updatedAt", "userImgUrl")
 values 
-('Patrice', $$Shitty racquets. Don't buy$$, 1, 8, 1, now(), now()),
+('Patrice', $$Shitty racquets. Don't buy$$, 1, 8, 1, now(), now(), $$https://bluemooseburgersandwings.com/wp-content/uploads/Blue-Moose-Muscle-web-min.png$$),
 ('Jim', $$Super nice, had a lot of fun playing with my friends!$$, 5, 1, 2, now(), now()),
 ('Nat', $$Very good product, but quite expensive, it should be somewhat cheaper$$, 4, 2, 3, now(), now()),
-('Soleil', $$Nice cactus, the problem was the delivery, the box was quite damaged and it damaged the plant as well$$, 3, 7, 4, now(), now()),
-('Soleil', $$nice racks!!!$$, 5, 8, 4, now(), now()),
-('Patrice', $$The dress is way too expensive for the quality. Fabric is thin and cheap. I don't recommend!$$, 1, 9, 1, now(), now())
+('Soleil', $$Nice cactus, the problem was the delivery, the box was quite damaged and it damaged the plant as well$$, 3, 7, 4, now(), now(), $$https://pngimg.com/uploads/sun/sun_PNG13410.png$$),
+('Soleil', $$nice racks!!!$$, 5, 8, 4, now(), now(), $$https://pngimg.com/uploads/sun/sun_PNG13410.png$$),
+('Patrice', $$The dress is way too expensive for the quality. Fabric is thin and cheap. I don't recommend!$$, 1, 9, 1, now(), now(), $$https://bluemooseburgersandwings.com/wp-content/uploads/Blue-Moose-Muscle-web-min.png$$)
 

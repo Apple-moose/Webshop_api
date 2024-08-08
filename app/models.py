@@ -36,13 +36,13 @@ class Review(Base):
     stars = Column(Integer)
     userId = Column(Integer, ForeignKey(
     "users.id"), nullable=False, index=True)
+    userImgUrl = Column(String, nullable=True)
     productId = Column(Integer, ForeignKey(
     "products.id"), nullable=False, index=True)
     createdAt = Column(DateTime(timezone=True), default=func.now(), nullable=False)
     updatedAt = Column(DateTime(timezone=True), default=func.now(), onupdate=func.now(), nullable=False)
 
     user = relationship("User", back_populates="reviews")
-
 
 class User(Base):
     __tablename__ = "users"
@@ -59,15 +59,4 @@ class User(Base):
     updatedAt = Column(DateTime(timezone=True), default=func.now(), onupdate=func.now(), nullable=False)
 
 
-    reviews = relationship("Review", back_populates="user") 
-
-
-# class Admin(Base):
-#     __tablename__ = "administrators"
-
-#     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
-#     admin_name = Column(String, nullable=False)
-#     password = Column(String, nullable=False)
-#     disabled = Column(Boolean, default=False)
-#     createdAt = Column(DateTime(timezone=True), default=func.now(), nullable=False)
-#     updatedAt = Column(DateTime(timezone=True), default=func.now(), onupdate=func.now(), nullable=False)
+    reviews = relationship("Review", back_populates="user")

@@ -27,7 +27,7 @@ def get_users_reviews(
     return reviews
 
 
-#Update y review by reviewId
+#Update my review by reviewId
 def update_review(
         db: Session, 
         review: schemas.ReviewUpdate, 
@@ -45,8 +45,11 @@ def update_review(
 # Write a Review as user (by productId)
 def create_review(db: Session, 
     rev: schemas.ReviewCreate,
-    user_id: int, prod_id: int):
-    db_rev = models.Review(**rev.dict(), userId=user_id, productId=prod_id)
+    user_id: int,
+    prod_id: int,
+    user_imgUrl: int):
+    db_rev = models.Review(**rev.dict(), 
+    userId=user_id, productId=prod_id, userImgUrl= user_imgUrl)
     db.add(db_rev)
     db.commit()
     db.refresh(db_rev)
