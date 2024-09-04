@@ -281,7 +281,8 @@ async def update_my_review(
     user: schemas.UserBase = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    check_review = reviews.get_review(db, rev_id=id, user_id=user.id)
+    check_review = reviews.get_review(db, rev_id=id, user_id=user.id),
+    print(f"Received update for review {id} with data: {user.id}")
 
     if check_review is None:
         raise HTTPException(status_code=404, detail="Review not found")
@@ -300,10 +301,16 @@ def write_my_review(
     user: schemas.UserBase = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    return reviews.create_review(db, user_id=user.id, prod_id=prodId, rev=rev)
+    return reviews.create_review(
+        db, 
+        user_id=user.id, 
+        prod_id=prodId, 
+        author=user.firstname, 
+        user_imgUrl=user.imageUrl, 
+        rev=rev)
 
     
-# Remove review by id
+# Delete review by id
 @app.delete("/review/{id}", response_model=schemas.Review)
 def remove_my_review(
     id: int,

@@ -47,9 +47,11 @@ def create_review(db: Session,
     rev: schemas.ReviewCreate,
     user_id: int,
     prod_id: int,
-    user_imgUrl: int):
+    user_imgUrl: str,
+    author: str,
+    ):
     db_rev = models.Review(**rev.dict(), 
-    userId=user_id, productId=prod_id, userImgUrl= user_imgUrl)
+    userId=user_id, author=author, productId=prod_id, userImgUrl= user_imgUrl)
     db.add(db_rev)
     db.commit()
     db.refresh(db_rev)
