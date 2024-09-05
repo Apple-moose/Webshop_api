@@ -22,10 +22,10 @@ async def get_current_user(token: str = Depends(reuseable_oauth)) -> UserBase:
         payload = jwt.decode(
             token, JWT_SECRET_KEY, algorithms=[ALGORITHM]
         )
-        print('payload is: ',payload)
+        # print('payload is: ',payload)
        
         token_data = TokenPayload(**payload)
-        print('token_data is: ',token_data)
+        # print('token_data is: ',token_data)
 
         if datetime.fromtimestamp(token_data.exp) < datetime.now():
             raise HTTPException(
