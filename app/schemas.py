@@ -97,6 +97,7 @@ class UserBase(BaseModel):
     lastname: Union[str, None] = None
     email: str
     imageUrl: Union[str, None] = None
+    is_Admin: Union[bool, None] = None
 
 class UserCreate(BaseModel):
     firstname: str

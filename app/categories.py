@@ -5,7 +5,6 @@ from . import models, schemas
 # get categories list
 def get_categories(db: Session, skip: int = 0, limit: int = 20):
     categories = db.query(models.Category).offset(skip).limit(limit).all()
-    print(categories)
     return categories
 
 
