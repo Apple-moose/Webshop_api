@@ -1,3 +1,8 @@
+SQL reset automatic id generation to +1 (Avoid key duplication error)
+
+SELECT setval('products_id_seq', (SELECT MAX(id) FROM products) + 1);
+
+
 SQL insert single query:
 
 insert into products (id, name, price, description, "imageUrl", "categoryId", "createdAt", "updatedAt")

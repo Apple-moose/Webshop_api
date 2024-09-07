@@ -151,7 +151,7 @@ def write_a_new_product(
 ):
     admin = is_user_admin(db, user_id=user.id)
     if admin is None:
-        raise HTTPException(status_code=404, detail="You are not an Administratore!!!")
+        raise HTTPException(status_code=404, detail="You are not an Administrator!!!")
     return products.create_product(db, product=product)
 
 

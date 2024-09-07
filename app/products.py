@@ -42,7 +42,7 @@ def get_products_list_by_category_id(
 
 
 #create product
-def create_product(db: Session, product: schemas.Product):
+def create_product(db: Session, product: schemas.ProductCreate):
     db_pro = models.Product(**product.dict())
     db.add(db_pro)
     db.commit()

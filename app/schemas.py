@@ -36,8 +36,12 @@ class ProductBase(BaseModel):
     imageUrl: Union[str, None] = None
     categoryId: int
 
-class ProductCreate(ProductBase):
-    pass
+class ProductCreate(BaseModel):
+    name: str
+    price: int
+    description: str
+    imageUrl: Union[str, None] = None
+    categoryId: int
 
 class Product(ProductBase):
     id: int
