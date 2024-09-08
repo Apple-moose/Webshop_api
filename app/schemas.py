@@ -57,7 +57,6 @@ class ProductUpdate(BaseModel):
     description: str
     imageUrl: Union[str, None] = None
     categoryId: int
-    updatedAt: datetime
 
 
 
