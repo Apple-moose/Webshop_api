@@ -10,12 +10,12 @@ class CategoryBase(BaseModel):
     id: int
     name: str
 
-class CategoryCreate(CategoryBase):
-    pass
+class CategoryCreate(BaseModel):
+    name: str
 
 class CategoryUpdate(BaseModel):
     name: str
-    updatedAt: datetime
+    # updatedAt: datetime
 
 class Category(CategoryBase):
     id: int
