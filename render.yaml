@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: Webshop_api
+    runtime: python
+    repo: https://github.com/Apple-moose/Webshop_api.git
+    region: frankfurt
+    plan: free
+    branch: main
+    buildCommand: pipenv install
+    startCommand: ./bin/start.sh
+    healthCheckPath: /healthz
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: Webshop_api_DB
+          property: connectionString
+
+databases:
+  - name: Webshop_api_DB
+    region: frankfurt
+    plan: free
+    databaseName: app
+    ipAllowList:
+      - source: 0.0.0.0/0
+        description: everywhere
