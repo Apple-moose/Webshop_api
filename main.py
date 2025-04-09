@@ -38,6 +38,11 @@ reuseable_oauth = OAuth2PasswordBearer(
     scheme_name="JWT"
 )
 
+# -o-o-o-o-o-o-o-o-o-o-o-o-o- DEBUG TEST -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
+# @app.get("/test")
+# async def test(response: Response):
+#     response.headers["Access-Control-Allow-Origin"] = "http://localhost:3000"
+#     return {"message": "CORS manually added!"}
 
 #-o-o-o-o-o-o-o-o-o-o-o-o- USER'S -o-o-o-o-o-o-o-o-o-o-o-o-o--oo-o-o-o-o-o-o-o-o-o-
 
